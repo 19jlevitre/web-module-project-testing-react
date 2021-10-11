@@ -1,26 +1,65 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, rerender } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
+import Loading from '../Loading';
 import Show from './../Show';
 
+
+
 const testShow = {
+
+    name: "",
+    id: 1,
+    image: "",
+    summary: "",
+    seasons: [
+        {id:0, name: "Season 1", episodes: []}, 
+        {id:1, name: "Season 2", episodes: []}, 
+        {id:2, name: "Season 3", episodes: []}, 
+        {id:3, name: "Season 4", episodes: []}
+      ]
+        
+
+    }
+    
     //add in approprate test data structure here.
-}
+
 
 test('renders testShow and no selected Season without errors', ()=>{
+    render(<Show show={testShow} selectedSeason="none"/>)
 });
 
 test('renders Loading component when prop show is null', () => {
+    render(<Show show={null}/>);
+    render(<Loading/>)
 });
 
 test('renders same number of options seasons are passed in', ()=>{
+    render(<Show show={testShow} selectedSeason="none"/>)
+    // const seasonsDisplayed = screen.queryByDisplayValue(0);
+    const seasonsOptions = screen.getAllByTestId(/season-option/i);
+    const seasonOne = screen.queryByDisplayValue('0');
+    const seasonTwo = screen.queryByDisplayValue('1');
+    const seasonThree = screen.queryByDisplayValue('2');
+    const seasonFour = screen.queryByDisplayValue('3');
+    expect(seasonOne).toBeInTheDocument
+    expect(seasonTwo).toBeInTheDocument
+    expect(seasonThree).toBeInTheDocument
+    expect(seasonFour).toBeInTheDocument
 });
 
 test('handleSelect is called when an season is selected', () => {
+    const fakeHandleSelect = jest.fn();
+    render(<Show show={testShow} selectedSeason={[0]} handleSelect={fakeHandleSelect}/>)
+
+    expect(fakeHandleSelect).toHaveBeenCalled();
+    
+    
 });
 
 test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+    const { rerender } =render(<Show show={testShow} />);
+    rerender(<Show show={testShow} selectedSeason="1"/>)
 });
 
 //Tasks:

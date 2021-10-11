@@ -21,7 +21,7 @@ const Display = (props) => {
         });
     }
         
-    const handleSelect = e => {
+     const handleSelect = e => {
         setSelectedSeason(e.target.value);
     };
 
